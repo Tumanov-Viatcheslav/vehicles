@@ -1,14 +1,18 @@
+import java.lang.reflect.Field;
+
 public class Car {
     String mark, color, type;
 
-    public Car(String car) {
-        int pos;
-        pos = car.indexOf("mark='") + 6;
-        mark = car.substring(pos, car.indexOf("'", pos));
-        pos = car.indexOf("color='", pos) + 7;
-        color = car.substring(pos, car.indexOf("'", pos));
-        pos = car.indexOf("type='", pos) + 6;
-        type = car.substring(pos, car.indexOf("'", pos));
+    public Car(String carStr) {
+        String className = getClass().getName();
+        Field[] fields = getClass().getDeclaredFields();
+        carStr = carStr.replace(className + "{", "");
+        carStr = carStr.replace("}", "");
+        carStr = carStr.replace("'", "");
+        String[] splittedLine = carStr.split(", ");
+        mark = splittedLine[0].replace(fields[0].getName() + "=", "");
+        color = splittedLine[1].replace(fields[1].getName() + "=", "");
+        type = splittedLine[2].replace(fields[2].getName() + "=", "");
     }
 
     public Car(String mark, String color, String type) {

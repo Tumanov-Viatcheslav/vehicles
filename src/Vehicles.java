@@ -22,6 +22,15 @@ public class Vehicles {
         }
     }
 
+    private static void printToFile2(List<Car> cars) {
+        try (BufferedWriter output = new BufferedWriter(new FileWriter("cars.txt"))) {
+            for (Car car : cars)
+                output.write(car.mark + " " + car.color + " " + car.type + System.lineSeparator());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     private static List<Car> readFromFile() {
         List<Car> cars = new ArrayList<>();
         try (BufferedReader input = new BufferedReader(new FileReader("cars.txt"))) {
@@ -37,10 +46,25 @@ public class Vehicles {
         return cars;
     }
 
+    private static List<Car> readFromFile2() {
+        List<Car> cars = new ArrayList<>();
+        try (BufferedReader input = new BufferedReader(new FileReader("cars.txt"))) {
+            String line;
+            String[] dividedLine;
+            while ((line = input.readLine()) != null) {
+                dividedLine = line.split(" ");
+                cars.add(new Car(dividedLine[0], dividedLine[1], dividedLine[2]));
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        return cars;
+    }
+
     public static void main(String[] args) {
         List<Car> cars = makeCarList();
-        printToFile(cars);
-        cars = readFromFile();
+        printToFile2(cars);
+        cars = readFromFile2();
         System.out.println(cars);
     }
 }
